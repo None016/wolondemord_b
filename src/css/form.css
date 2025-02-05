@@ -1,0 +1,58 @@
+form{
+    margin: 50px auto;
+    background-color: #444;
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    width: 300px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14pt;
+}
+
+form input{
+    box-sizing: border-box;
+    margin: 10px 0;
+    background-color: #555;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14pt;
+    padding: 5px;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    color: #fff;
+}
+
+form button{
+    box-sizing: border-box;
+    background-color: #8c00ff;   
+    width: 100%;
+    font-size: 14pt;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+}
+
+form h1{
+    margin: 5px 0;
+    font-size: 18pt;
+}
+
+form p{
+    color: #ff0505;
+}
+
+form a{
+    all: unset;
+    color: #8c00ff;
+    cursor: pointer;
+    font-size: 12pt;
+}
+
+form label{
+    color: #ff0505;
+}
+
