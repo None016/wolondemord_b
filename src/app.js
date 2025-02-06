@@ -4,6 +4,8 @@ import Registration from './registration';
 import Authorization from './authorization';
 import Home from './home';
 import { get_Cookie } from './cookie';
+import Editing from './editing';
+import Access from './access';
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -27,8 +29,13 @@ class App extends React.Component {
     super(props);
     this.state = {
       isAut: false,
-      isLoading: true, // Добавляем флаг загрузки
+      isLoading: true,
+      activeFile: ""
     };
+  }
+
+  setActiveFile = (idFile) => {
+    this.setState({activeFile: idFile})
   }
 
   componentDidMount() {
@@ -82,8 +89,9 @@ class App extends React.Component {
         <Routes>
           <Route path="/register" element={<Registration sendData={this.setReg} />} />
           <Route path="/login" element={<Authorization sendData={this.setAut} />} />
-          <Route path="/index" element={<Home />} />
-          {/* Если пользователь авторизован, перенаправляем на /h, иначе на /login */}
+          <Route path="/index" element={<Home setActiveFile={this.setActiveFile}/>} />
+          <Route path='/editing' element={<Editing idFile={this.state.activeFile}/>}/>
+          <Route path='/access' element={<Access idFile={this.state.activeFile}/>}/>
           <Route
             path="/"
             element={

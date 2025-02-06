@@ -68,6 +68,10 @@ section .show_more li{
     cursor: pointer;
 }
 
+section .show_more a{
+    all: unset;
+}
+
 section .show_more li:hover {
     background-color: #333;
 }
