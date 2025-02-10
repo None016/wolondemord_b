@@ -27,25 +27,6 @@ class Authorization extends React.Component{
     };
 
 
-    // setCookieFunction = (name, value, days) => {
-    //     let expires = "";
-    //     if (days) {
-    //         const date = new Date();
-    //         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    //         expires = "; expires=" + date.toUTCString();
-    //     }
-    //     document.cookie = name + "=" + value + expires + "; path=/";
-    // };
-
-    // getCookie = (name) => {
-    //     const value = `; ${document.cookie}`;
-    //     const parts = value.split(`; ${name}=`);
-    //     if (parts.length === 2) return parts.pop().split(";").shift();
-    //     return null;
-    // };
-
-
-
     handleSubmit = async (event) => {
         event.preventDefault();
         console.log(this.state.email);
@@ -68,7 +49,7 @@ class Authorization extends React.Component{
                     var data = await response.json();
                     console.log(data);
                     console.log(data.token);                
-                    set_Cookie("token", data["token"], 1);
+                    set_Cookie("token", data["token"], 3);
                     console.log(get_Cookie("token"));
                     console.log("_____________________________________")
 

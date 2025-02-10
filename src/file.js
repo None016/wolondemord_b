@@ -26,9 +26,41 @@ class File extends React.Component {
           <ul>
             <li>Удалить</li>
             <li onClick={this.clickRedirectEditing}>Редактировать</li>
-            <li onClick={this.clickRedirectAccess}>Изменить права</li>
-            {/* Оберните li в тег a, а не наоборот */}
-            <li><a href={this.props.linkToFile} target="_blank" rel="noopener noreferrer">Скачать</a></li>
+            <li onClick={this.clickRedirectAccess}>Изменить права</li>           
+
+            <a href={this.props.linkToFile} onClick={(event) => {
+              event.preventDefault(); // Предотвращаем стандартное поведение ссылки (переход)
+
+              fetch(this.props.linkToFile)
+                .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.blob(); // Получаем данные как Blob (бинарный объект)
+                })
+                .then(blob => {
+                  const url = window.URL.createObjectURL(blob); // Создаем URL для Blob
+                  const a = document.createElement('a');
+                  a.style.display = 'none';
+                  a.href = url;
+                  a.download = this.props.linkToFile.split('/').pop();  // Имя файла (из URL)
+                  // a.download = "your_desired_filename.ext"; //  ИЛИ: Жестко заданное имя файла
+
+                  document.body.appendChild(a);
+                  a.click();
+                  window.URL.revokeObjectURL(url); // Очищаем память, освобождаем URL
+                  document.body.removeChild(a);
+                })
+                .catch(error => {
+                  alert("Недостаточно прав")
+                  // Обработка ошибки (например, показать сообщение пользователю)
+                });
+
+            }}
+            >
+              <li>Скачать</li>
+
+            </a>
           </ul>
         </div>
       );
@@ -77,7 +109,7 @@ class File extends React.Component {
         {this.menu()}
         <img src={ico} alt="Иконка файла" />
         <h3>{this.props.name}</h3>
-        <h4>id:{this.props.idFile}</h4>
+        <h4>id:{String(this.props.idFile).padStart(8, '0')}</h4>
       </section>
     );
   }

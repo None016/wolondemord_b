@@ -24,7 +24,7 @@ class Home extends React.Component{
         if (document.cookie) {
               const token = get_Cookie('token');
         
-              if (token) {
+                if (token) {
                 try {
                     const request = await fetch('http://127.0.0.1:5000/get_files', {
                         method: 'POST',
@@ -41,18 +41,19 @@ class Home extends React.Component{
                     }
 
                 } catch (error) {
-                  console.error('Ошибка верификации:', error);
+                    console.error('Ошибка верификации:', error);
                 }
-              }
-            }
+                }
+        }
     }
 
     renderFiles(){
         var final = [];
+        var token = get_Cookie('token');
 
         for (let i of this.state.file){
             console.log(i[1]);
-            final.push(<File name={i[1]} idFile={String(i[0]).padStart(8, '0')} linkToFile={"http://127.0.0.1:5000/download/" + i[2]} setActiveFile={this.props.setActiveFile}/>);
+            final.push(<File name={i[1]} idFile={i[0]} linkToFile={"http://127.0.0.1:5000/download/" + token + "/" + i[0]} setActiveFile={this.props.setActiveFile}/>);
         }
 
         return(final);

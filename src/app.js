@@ -30,7 +30,7 @@ class App extends React.Component {
     this.state = {
       isAut: false,
       isLoading: true,
-      activeFile: ""
+      activeFile: null
     };
   }
 

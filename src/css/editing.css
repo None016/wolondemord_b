@@ -1,0 +1,12 @@
+h1{
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18pt;
+    margin: 10px;
+    width: 100%;
+}
+
+
+.editing label{
+    color: #fff;
+}
