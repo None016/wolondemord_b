@@ -21,49 +21,92 @@ class File extends React.Component {
 
   menu = () => {
     if (this.state.showMenu) {
-      return (
-        <div className="show_more">
-          <ul>
-            <li>Удалить</li>
-            <li onClick={this.clickRedirectEditing}>Редактировать</li>
-            <li onClick={this.clickRedirectAccess}>Изменить права</li>           
-
-            <a href={this.props.linkToFile} onClick={(event) => {
-              event.preventDefault(); // Предотвращаем стандартное поведение ссылки (переход)
-
-              fetch(this.props.linkToFile)
-                .then(response => {
-                  if (!response.ok) {
-                      throw new Error(`HTTP error! Status: ${response.status}`);
-                  }
-                  return response.blob(); // Получаем данные как Blob (бинарный объект)
-                })
-                .then(blob => {
-                  const url = window.URL.createObjectURL(blob); // Создаем URL для Blob
-                  const a = document.createElement('a');
-                  a.style.display = 'none';
-                  a.href = url;
-                  a.download = this.props.linkToFile.split('/').pop();  // Имя файла (из URL)
-                  // a.download = "your_desired_filename.ext"; //  ИЛИ: Жестко заданное имя файла
-
-                  document.body.appendChild(a);
-                  a.click();
-                  window.URL.revokeObjectURL(url); // Очищаем память, освобождаем URL
-                  document.body.removeChild(a);
-                })
-                .catch(error => {
-                  alert("Недостаточно прав")
-                  // Обработка ошибки (например, показать сообщение пользователю)
-                });
-
-            }}
-            >
-              <li>Скачать</li>
-
-            </a>
-          </ul>
-        </div>
-      );
+      if(!this.props.isFrendFile){
+        return (
+          <div className="show_more">
+            <ul>
+              <li onClick={this.props.del_file}>Удалить</li>
+              <li onClick={this.clickRedirectEditing}>Редактировать</li>
+              <li onClick={this.clickRedirectAccess}>Изменить права</li>           
+  
+              <a href={this.props.linkToFile} onClick={(event) => {
+                event.preventDefault(); // Предотвращаем стандартное поведение ссылки (переход)
+  
+                fetch(this.props.linkToFile)
+                  .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.blob(); // Получаем данные как Blob (бинарный объект)
+                  })
+                  .then(blob => {
+                    const url = window.URL.createObjectURL(blob); // Создаем URL для Blob
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = this.props.linkToFile.split('/').pop();  // Имя файла (из URL)
+                    // a.download = "your_desired_filename.ext"; //  ИЛИ: Жестко заданное имя файла
+  
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url); // Очищаем память, освобождаем URL
+                    document.body.removeChild(a);
+                  })
+                  .catch(error => {
+                    alert("Недостаточно прав")
+                    // Обработка ошибки (например, показать сообщение пользователю)
+                  });
+  
+              }}
+              >
+                <li>Скачать</li>
+  
+              </a>
+            </ul>
+          </div>
+        );
+      }else{
+        return (
+          <div className="show_more">
+            <ul>         
+  
+              <a href={this.props.linkToFile} onClick={(event) => {
+                event.preventDefault(); // Предотвращаем стандартное поведение ссылки (переход)
+  
+                fetch(this.props.linkToFile)
+                  .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.blob(); // Получаем данные как Blob (бинарный объект)
+                  })
+                  .then(blob => {
+                    const url = window.URL.createObjectURL(blob); // Создаем URL для Blob
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = this.props.linkToFile.split('/').pop();  // Имя файла (из URL)
+                    // a.download = "your_desired_filename.ext"; //  ИЛИ: Жестко заданное имя файла
+  
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url); // Очищаем память, освобождаем URL
+                    document.body.removeChild(a);
+                  })
+                  .catch(error => {
+                    alert("Недостаточно прав")
+                    // Обработка ошибки (например, показать сообщение пользователю)
+                  });
+  
+              }}
+              >
+                <li>Скачать</li>
+  
+              </a>
+            </ul>
+          </div>
+        );
+      }
     }
     return null;
   };

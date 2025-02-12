@@ -75,3 +75,7 @@ section .show_more a{
 section .show_more li:hover {
     background-color: #333;
 }
+
+.show_more {
+    width: 170px;
+}

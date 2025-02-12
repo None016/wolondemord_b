@@ -9,7 +9,8 @@ class Access extends React.Component{
         this.state = {
             user_list: [],
             back: false, 
-            email: ""
+            email: "",
+            emailError: false, 
         }
     }
 
@@ -90,7 +91,7 @@ class Access extends React.Component{
                 this.setState({user_list: new_list})
             }
         }catch{
-            console.log("Ошибка")
+            console.error("Ошибка")
         }
     } 
 
@@ -116,8 +117,10 @@ class Access extends React.Component{
         this.setState({back: true})
     }
 
-    hendelEmail = (event) =>{
-        this.setState({email: event.target.value})
+    handleEmail = (event) => {
+        const email = event.target.value;
+        const isValidEmail = /\S+@\S+\.\S+/.test(email);
+        this.setState({ email, emailError: !isValidEmail });
     }
 
     render(){
@@ -128,7 +131,7 @@ class Access extends React.Component{
         }
         return(
             <main className="access">
-                <h1>Права доступа для файла {this.props.idFile}</h1>
+                <h1>Права доступа для файла {String(this.props.idFile).padStart(8, '0')}</h1>
 
                 <button className="button" onClick={this.backward}>Назад</button>
 
@@ -138,10 +141,10 @@ class Access extends React.Component{
                 </ul>
 
                 <h2>Добавить пользователя:</h2>
+                <p>{this.state.emailError && "Некоректный email"}</p>
                 <div id="add-user-form">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" onChange={this.hendelEmail}/>
-                    <div className="error-message" id="email-error">Некорректный email</div>
+                    <input type="email" id="email" name="email" onChange={this.handleEmail}/>
                     <button className="button" onClick={this.addAccessList}>Добавить</button>
                 </div>
             </main>

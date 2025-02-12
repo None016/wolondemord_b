@@ -10,6 +10,10 @@
     margin: 10px 0;
 }
 
+.access p{
+    color: #ff0505;
+}
+
 .user-list {
     list-style: none;
     padding: 0;
@@ -28,20 +32,6 @@
     /* background-color: #444;
     padding: 10px;
     border-radius: 5px; */
-}
-
-.error {
-    color: red;
-    border-color: red;
-}
-
-.error-message {
-    color: red;
-    display: none; /* Скрываем по умолчанию */
-}
-
-.error .error-message {
-     display: block; /*Показываем при наличии класса error*/
 }
 
 .access .button {

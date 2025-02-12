@@ -1,11 +1,18 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Registration from './registration';
 import Authorization from './authorization';
 import Home from './home';
 import { get_Cookie } from './cookie';
 import Editing from './editing';
 import Access from './access';
+
+import "./css/header.css"
+import Amogus from "./img/Amogus.png" 
+import LoadFile from './loadFile'; 
+
+
 
 function withRouter(Component) {
   function ComponentWithRouterProp(props) {
@@ -30,12 +37,13 @@ class App extends React.Component {
     this.state = {
       isAut: false,
       isLoading: true,
-      activeFile: null
+      activeFile: null,
+      isReg: false,
     };
   }
 
   setActiveFile = (idFile) => {
-    this.setState({activeFile: idFile})
+    this.setState({ activeFile: idFile });
   }
 
   componentDidMount() {
@@ -60,49 +68,70 @@ class App extends React.Component {
 
           if (request.status === 200) {
             this.setState({ isAut: true });
+          } else {
+              document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              this.setState({isAut: false});
           }
         } catch (error) {
           console.error('Ошибка верификации:', error);
+          document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+           this.setState({isAut: false});
         }
       }
     }
-    this.setState({ isLoading: false }); // Загрузка завершена
+    this.setState({ isLoading: false });
   };
 
   setReg = (data) => {
-    // ... этот метод, вероятно, вам нужен для обработки регистрации, но он не меняет поведение при начальной загрузке
-    this.setState({ isReg: data });
+    if (data) {
+      this.setState({ isReg: true });
+    }
   };
 
   setAut = (data) => {
-    this.setState({ isAut: data, isReg: true });
+    if (data) {
+        this.setState({ isAut: data, isReg: true });
+    }
+
   };
 
   render() {
-    // Если данные еще загружаются, показываем индикатор загрузки
     if (this.state.isLoading) {
       return <div>Загрузка...</div>;
     }
 
     return (
       <BrowserRouter>
-        <Routes>
-          <Route path="/register" element={<Registration sendData={this.setReg} />} />
-          <Route path="/login" element={<Authorization sendData={this.setAut} />} />
-          <Route path="/index" element={<Home setActiveFile={this.setActiveFile}/>} />
-          <Route path='/editing' element={<Editing idFile={this.state.activeFile}/>}/>
-          <Route path='/access' element={<Access idFile={this.state.activeFile}/>}/>
-          <Route
-            path="/"
-            element={
-              this.state.isAut ? (
-                <Navigate to="/index" replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-        </Routes>
+        <main className='main'>
+          <header>
+            <img src={Amogus} />
+            <div>
+              <Link to="/index">Главная</Link>
+              <Link to="/load_file">Загрузить файлы</Link>
+              <Link to="/frend_file">Чужие файлы</Link>
+            </div>
+          </header>
+          <Routes>
+            <Route path="/register" element={<Registration sendData={this.setReg} />} />
+            <Route path="/login" element={<Authorization sendData={this.setAut} />} />
+            <Route path="/index" element={this.state.isAut ? <Home setActiveFile={this.setActiveFile} isFrendFile={false}/> : <Navigate to="/login" />} />
+            <Route path='/editing' element={this.state.isAut? <Editing idFile={this.state.activeFile} /> : <Navigate to="/login"/>}/>
+            <Route path='/access' element={this.state.isAut?  <Access idFile={this.state.activeFile} /> : <Navigate to="/login"/>}/>
+            <Route path='/load_file' element={this.state.isAut? <LoadFile/> : <Navigate to="/login"/>}/>
+            <Route path='/frend_file' element={this.state.isAut? <Home setActiveFile={this.setActiveFile} isFrendFile={true}/> : <Navigate to="/login"/>}/>
+            <Route
+              path="/"
+              element={
+                this.state.isAut ? (
+                  <Navigate to="/index" replace />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+            <Route path="*" element={<div>404 Not Found</div>} />
+          </Routes>
+        </main>
       </BrowserRouter>
     );
   }
